@@ -28,7 +28,7 @@
             this.children.Add(new CurrencySearchTreeNode(child) { parent = this });
         }
 
-        public IEnumerable<Currency> GetAllCurrenciesFromRoot()
+        public IReadOnlyCollection<Currency> GetAllCurrenciesFromRoot()
         {
             var nodeStack = new Stack<CurrencySearchTreeNode>();
 
