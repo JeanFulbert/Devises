@@ -4,7 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ShouldReturnsPath
+    public class ShouldReturnSimplePath
     {
         [Test]
         public void WhenDirectCurrenciesAsked()

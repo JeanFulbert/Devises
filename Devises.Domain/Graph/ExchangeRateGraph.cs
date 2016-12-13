@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     public class ExchangeRateGraph
     {
@@ -32,17 +33,23 @@
 
         public IReadOnlyCollection<ExchangeRateEdge> GetShortestPathBetween(Currency from, Currency to)
         {
-            if (matrix.ContainsKey(from) && matrix.ContainsKey(to))
+            if (this.matrix.ContainsKey(from) && this.matrix[from].ContainsKey(to))
             {
-                return new[] { new ExchangeRateEdge(from, to, matrix[from][to]) };
+                return new List<ExchangeRateEdge> {new ExchangeRateEdge(from, to, this.matrix[from][to])};
             }
 
-            return new List<ExchangeRateEdge>();
-        }
+            var currenciesToVisit = new Queue<Currency>();
+            var rootNode = new CurrencySearchTreeNode(from);
 
-        private IReadOnlyCollection<ExchangeRateEdge> GetShortestPathBetween(Currency from, Currency to, IReadOnlyCollection<Currency> usedCurrencies)
-        {
-            return new List<ExchangeRateEdge>();
+            currenciesToVisit.Enqueue(from);
+            while (currenciesToVisit.Count > 0)
+            {
+                var currency = currenciesToVisit.Dequeue();
+                if (currency == to)
+                {
+                    rootNode.AddChild(to);
+                }
+            }
         }
     }
 }

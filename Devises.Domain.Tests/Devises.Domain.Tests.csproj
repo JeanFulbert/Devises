@@ -45,9 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Currencies.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnsEmptyList.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnsPath.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnsSingleEdge.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnEmptyList.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnSimplePath.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnComplexPath.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

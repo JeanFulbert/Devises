@@ -4,7 +4,7 @@
     using NUnit.Framework;
 
     [TestFixture]
-    public class ShouldReturnsEmptyList
+    public class ShouldReturnEmptyList
     {
         [Test]
         public void WhenFromCurrencyDoesNotExists()
