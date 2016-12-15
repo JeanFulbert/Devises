@@ -23,9 +23,12 @@
 
         public IReadOnlyCollection<CurrencySearchTreeNode> Children => this.children;
 
-        public void AddChild(Currency child)
+        public CurrencySearchTreeNode AddChild(Currency child)
         {
-            this.children.Add(new CurrencySearchTreeNode(child) { parent = this });
+            var node = new CurrencySearchTreeNode(child) { parent = this };
+            this.children.Add(node);
+
+            return node;
         }
 
         public IReadOnlyCollection<Currency> GetAllCurrenciesFromRoot()

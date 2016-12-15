@@ -33,20 +33,25 @@
 
         public IReadOnlyCollection<ExchangeRateEdge> GetShortestPathBetween(Currency from, Currency to)
         {
-            var shortestPathLeaf = SearchShortestPathWithBreadthFirstSearch(from, to);
+            var shortestPathLeaf = this.SearchShortestPathWithBreadthFirstSearch(from, to);
             var shortestPath = this.GetShortestPathFromLeafNode(shortestPathLeaf);
             return shortestPath;
         }
 
-        private static CurrencySearchTreeNode SearchShortestPathWithBreadthFirstSearch(Currency from, Currency to)
+        private CurrencySearchTreeNode SearchShortestPathWithBreadthFirstSearch(Currency from, Currency to)
         {
+            if (!this.matrix.ContainsKey(from) || !this.matrix.ContainsKey(to))
+            {
+                return null;
+            }
+
             var nodesToVisit = new Queue<CurrencySearchTreeNode>();
-            var rootNode = new CurrencySearchTreeNode(from);
+            var unvisitedCurrencies = new HashSet<Currency>(this.matrix.Keys);
 
             CurrencySearchTreeNode shortestPathLeaf = null;
 
-            nodesToVisit.Enqueue(rootNode);
-            while (nodesToVisit.Count > 0)
+            nodesToVisit.Enqueue(new CurrencySearchTreeNode(from));
+            while (nodesToVisit.Any())
             {
                 var node = nodesToVisit.Dequeue();
                 if (node.Currency == to)
@@ -55,8 +60,16 @@
                     break;
                 }
 
-                foreach (var child in node.Children)
+                unvisitedCurrencies.Remove(node.Currency);
+
+                var currenciesToVisit =
+                    this.matrix[node.Currency].Keys
+                        .Where(c => unvisitedCurrencies.Contains(c))
+                        .ToList();
+
+                foreach (var currencyToVisit in currenciesToVisit)
                 {
+                    var child = node.AddChild(currencyToVisit);
                     nodesToVisit.Enqueue(child);
                 }
             }
@@ -77,7 +90,7 @@
                 currenciesFromRoot
                     .Zip(
                         currenciesFromRoot.Skip(1),
-                        BuildExchangeRateEdge)
+                        this.BuildExchangeRateEdge)
                     .ToList();
 
             return edges;
