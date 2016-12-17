@@ -26,6 +26,37 @@
         public ExchangeRate Invert() =>
             new ExchangeRate(1 / this.rate);
 
+
+        public static implicit operator decimal(ExchangeRate e)
+        {
+            return e.rate;
+        }
+
+        public static ExchangeRate operator *(ExchangeRate a, ExchangeRate b)
+        {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
+            if (b == null)
+            {
+                throw new ArgumentNullException(nameof(b));
+            }
+
+            return new ExchangeRate(a.rate * b.rate);
+        }
+
+        public static decimal operator *(ExchangeRate a, decimal b)
+        {
+            if (a == null)
+            {
+                throw new ArgumentNullException(nameof(a));
+            }
+
+            return a.rate * b;
+        }
+
         public override string ToString() =>
             this.rate.ToString(CultureInfo.InvariantCulture);
     }
