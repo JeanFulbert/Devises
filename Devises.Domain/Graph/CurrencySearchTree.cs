@@ -21,11 +21,14 @@
 
         public Currency Currency { get; }
 
-        public IReadOnlyCollection<CurrencySearchTreeNode> Children => this.children;
-
-        public void AddChild(Currency child)
+        public IReadOnlyCollection<CurrencySearchTreeNode> AddChildren(IEnumerable<Currency> currencies)
         {
-            this.children.Add(new CurrencySearchTreeNode(child) { parent = this });
+            var childrenNodes =
+                currencies
+                    .Select(child => new CurrencySearchTreeNode(child) { parent = this })
+                    .ToList();
+            this.children.AddRange(childrenNodes);
+            return childrenNodes;
         }
 
         public IEnumerable<Currency> GetAllCurrenciesFromRoot()
