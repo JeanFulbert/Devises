@@ -20,9 +20,12 @@
 
         public Currency Currency { get; }
 
+        public CurrencySearchTreeNode CreateChild(Currency child) =>
+            new CurrencySearchTreeNode(child) {parent = this};
+
         public IReadOnlyCollection<CurrencySearchTreeNode> CreateChildren(IEnumerable<Currency> children) =>
             children
-                .Select(c => new CurrencySearchTreeNode(c) { parent = this })
+                .Select(this.CreateChild)
                 .ToList();
 
         public IReadOnlyCollection<Currency> GetAllCurrenciesFromRoot()
