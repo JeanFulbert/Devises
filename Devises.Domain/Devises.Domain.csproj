@@ -42,6 +42,9 @@
   <ItemGroup>
     <Compile Include="Currency.cs" />
     <Compile Include="ExchangeRate.cs" />
+    <Compile Include="Files\FileContent.cs" />
+    <Compile Include="Files\FileConverter.cs" />
+    <Compile Include="Files\NoCurrencyPathFoundException.cs" />
     <Compile Include="GetHashCodeCombiner.cs" />
     <Compile Include="Graph\CurrencySearchTree.cs" />
     <Compile Include="Graph\ExchangeRateEdge.cs" />

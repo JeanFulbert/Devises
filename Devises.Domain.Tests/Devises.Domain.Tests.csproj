@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Currencies.cs" />
+    <Compile Include="FilesSpecs\ShouldThrowAnException.cs" />
     <Compile Include="GraphSpecs\ShouldReturnValueWIthFullRate.cs" />
     <Compile Include="GraphSpecs\ShouldReturnShortestComplexPath.cs" />
     <Compile Include="GraphSpecs\ShouldReturnEmptyList.cs" />

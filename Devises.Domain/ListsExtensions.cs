@@ -14,6 +14,6 @@
         }
 
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> source) =>
-            source?.Any() ?? false;
+            !source?.Any() ?? false;
     }
 }
