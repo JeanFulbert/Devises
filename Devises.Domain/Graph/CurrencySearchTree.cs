@@ -20,18 +20,18 @@
         }
 
         public Currency Currency { get; }
+        
+        public IReadOnlyCollection<CurrencySearchTreeNode> Children => this.children;
 
-        public IReadOnlyCollection<CurrencySearchTreeNode> AddChildren(IEnumerable<Currency> currencies)
+        public CurrencySearchTreeNode AddChild(Currency child)
         {
-            var childrenNodes =
-                currencies
-                    .Select(child => new CurrencySearchTreeNode(child) { parent = this })
-                    .ToList();
-            this.children.AddRange(childrenNodes);
-            return childrenNodes;
+            var node = new CurrencySearchTreeNode(child) { parent = this };
+            this.children.Add(node);
+
+            return node;
         }
 
-        public IEnumerable<Currency> GetAllCurrenciesFromRoot()
+        public IReadOnlyCollection<Currency> GetAllCurrenciesFromRoot()
         {
             var nodeStack = new Stack<CurrencySearchTreeNode>();
 

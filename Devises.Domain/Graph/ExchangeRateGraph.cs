@@ -33,68 +33,73 @@
 
         public IReadOnlyCollection<ExchangeRateEdge> GetShortestPathBetween(Currency from, Currency to)
         {
-            if (!this.matrix.ContainsKey(from))
+            var shortestPathLeaf = this.SearchShortestPathWithBreadthFirstSearch(from, to);
+            var shortestPath = this.GetShortestPathFromLeafNode(shortestPathLeaf);
+            return shortestPath;
+        }
+
+        private CurrencySearchTreeNode SearchShortestPathWithBreadthFirstSearch(Currency from, Currency to)
+        {
+            if (!this.matrix.ContainsKey(from) || !this.matrix.ContainsKey(to))
+            {
+                return null;
+            }
+
+            var nodesToVisit = new Queue<CurrencySearchTreeNode>();
+            var unvisitedCurrencies = new HashSet<Currency>(this.matrix.Keys);
+
+            CurrencySearchTreeNode shortestPathLeaf = null;
+
+            nodesToVisit.Enqueue(new CurrencySearchTreeNode(from));
+            while (nodesToVisit.Any())
+            {
+                var node = nodesToVisit.Dequeue();
+                if (node.Currency == to)
+                {
+                    shortestPathLeaf = node;
+                    break;
+                }
+
+                unvisitedCurrencies.Remove(node.Currency);
+
+                var currenciesToVisit =
+                    this.matrix[node.Currency].Keys
+                        .Where(c => unvisitedCurrencies.Contains(c))
+                        .ToList();
+
+                foreach (var currencyToVisit in currenciesToVisit)
+                {
+                    var child = node.AddChild(currencyToVisit);
+                    nodesToVisit.Enqueue(child);
+                }
+            }
+
+            return shortestPathLeaf;
+        }
+
+        private IReadOnlyCollection<ExchangeRateEdge> GetShortestPathFromLeafNode(CurrencySearchTreeNode shortestPathLeaf)
+        {
+            if (shortestPathLeaf == null)
             {
                 return new List<ExchangeRateEdge>();
             }
 
-            var resultNode = this.GetShortestPathWithBreadthFirst(from, to);
-            
-            var fullPath =
-                resultNode != null
-                ? this.ConvertResultNodeToEdges(resultNode)
-                : new List<ExchangeRateEdge>();
+            var currenciesFromRoot = shortestPathLeaf.GetAllCurrenciesFromRoot();
 
-            return fullPath;
-        }
-
-        private CurrencySearchTreeNode GetShortestPathWithBreadthFirst(
-            Currency source,
-            Currency destination)
-        {
-            var unvisitedCurrencies = new HashSet<Currency>(this.matrix.Keys);
-            var nodeToVisit = new Queue<CurrencySearchTreeNode>();
-            CurrencySearchTreeNode resultNode = null;
-
-            nodeToVisit.Enqueue(new CurrencySearchTreeNode(source));
-
-            while (nodeToVisit.Any())
-            {
-                var currentNode = nodeToVisit.Dequeue();
-                unvisitedCurrencies.Remove(currentNode.Currency);
-
-                var children =
-                    this.matrix[currentNode.Currency].Keys
-                        .Where(c => unvisitedCurrencies.Contains(c))
-                        .ToList();
-
-                var nodes = currentNode.AddChildren(children);
-                var destinationNode = nodes.FirstOrDefault(n => n.Currency == destination);
-                if (destinationNode != null)
-                {
-                    resultNode = destinationNode;
-                    break;
-                }
-
-                foreach (var node in nodes)
-                {
-                    nodeToVisit.Enqueue(node);
-                }
-            }
-
-            return resultNode;
-        }
-
-        private IReadOnlyCollection<ExchangeRateEdge> ConvertResultNodeToEdges(CurrencySearchTreeNode resultNode)
-        {
-            var currenciesFromRoot = resultNode.GetAllCurrenciesFromRoot().ToList();
-            var result =
+            var edges =
                 currenciesFromRoot
                     .Zip(
                         currenciesFromRoot.Skip(1),
-                        (c1, c2) => new ExchangeRateEdge(c1, c2, this.matrix[c1][c2]))
+                        this.BuildExchangeRateEdge)
                     .ToList();
-            return result;
+
+            return edges;
+        }
+
+        private ExchangeRateEdge BuildExchangeRateEdge(Currency cFrom, Currency cTo)
+        {
+            var rate = this.matrix[cFrom][cTo];
+            return new ExchangeRateEdge(cFrom, cTo, rate);
         }
     }
 }
