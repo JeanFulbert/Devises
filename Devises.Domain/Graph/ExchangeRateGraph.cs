@@ -67,11 +67,8 @@
                         .Where(c => unvisitedCurrencies.Contains(c))
                         .ToList();
 
-                foreach (var currencyToVisit in currenciesToVisit)
-                {
-                    var child = node.AddChild(currencyToVisit);
-                    nodesToVisit.Enqueue(child);
-                }
+                var children = node.CreateChildren(currenciesToVisit);
+                nodesToVisit.EnqueueAll(children);
             }
 
             return shortestPathLeaf;

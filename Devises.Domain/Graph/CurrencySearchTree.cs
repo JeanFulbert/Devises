@@ -7,7 +7,6 @@
     public class CurrencySearchTreeNode
     {
         private CurrencySearchTreeNode parent;
-        private readonly List<CurrencySearchTreeNode> children = new List<CurrencySearchTreeNode>();
 
         public CurrencySearchTreeNode(Currency currency)
         {
@@ -20,16 +19,11 @@
         }
 
         public Currency Currency { get; }
-        
-        public IReadOnlyCollection<CurrencySearchTreeNode> Children => this.children;
 
-        public CurrencySearchTreeNode AddChild(Currency child)
-        {
-            var node = new CurrencySearchTreeNode(child) { parent = this };
-            this.children.Add(node);
-
-            return node;
-        }
+        public IReadOnlyCollection<CurrencySearchTreeNode> CreateChildren(IEnumerable<Currency> children) =>
+            children
+                .Select(c => new CurrencySearchTreeNode(c) { parent = this })
+                .ToList();
 
         public IReadOnlyCollection<Currency> GetAllCurrenciesFromRoot()
         {
