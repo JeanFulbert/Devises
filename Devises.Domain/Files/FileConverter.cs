@@ -10,7 +10,7 @@
     public class FileConverter
     {
         private const string SourceDevisePattern = @"(?<source>\w{3})";
-        private const string RatioPattern = @"(?<ratio>\d+(?:[\.,]\d))";
+        private const string RatioPattern = @"(?<ratio>\d+(?:[\.,]\d+))";
         private const string DestinationDevisePattern = @"(?<dest>\w{3})";
 
         private static readonly Regex HeaderRegex =
