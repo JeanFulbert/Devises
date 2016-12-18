@@ -54,6 +54,20 @@
         }
 
         [Test]
+        public void WhenNumberOfLinesIsLowerThan1()
+        {
+            var sut = new FileConverter();
+
+            Assert.Throws<InvalidOperationException>(
+                () => sut.Convert(new List<string>
+                {
+                    "EUR;500;USD",
+                    "0",
+                    "EUR;USD;1.2",
+                }));
+        }
+
+        [Test]
         public void WhenOneOfOtherLinesIsBadlyFormatted()
         {
             var sut = new FileConverter();
@@ -65,6 +79,20 @@
                     "2",
                     "EUR;USD;1.2",
                     "bbbbbbbbbb"
+                }));
+        }
+
+        [Test]
+        public void WhenTheExpectedNumberOfLinesDoesntMatchTheActualNumberOfLines()
+        {
+            var sut = new FileConverter();
+
+            Assert.Throws<InvalidOperationException>(
+                () => sut.Convert(new List<string>
+                {
+                    "EUR;500;USD",
+                    "2",
+                    "EUR;USD;1.2",
                 }));
         }
     }

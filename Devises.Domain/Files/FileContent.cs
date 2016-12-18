@@ -2,10 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Devises.Domain;
     using Devises.Domain.Graph;
 
-    public class FileContent
+    public class FileContent : ValueObject<FileContent>
     {
         private readonly Currency source;
         private readonly Currency destination;
@@ -56,5 +57,18 @@
             var convertedValue = shortestPath.ApplyRates(this.value);
             return convertedValue;
         }
+
+        protected override bool EqualsCore(FileContent other) =>
+            this.source == other.source &&
+            this.destination == other.destination &&
+            this.value == other.value &&
+            this.edges.SequenceEqual(other.edges);
+
+        protected override int GetHashCodeCore() =>
+            GetHashCodeCombiner.GetCombinedHashCode(
+                this.source,
+                this.destination,
+                this.value,
+                this.edges);
     }
 }
