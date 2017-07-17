@@ -1,10 +1,8 @@
 ﻿namespace Devises.Domain
 {
-    using System.Linq;
-
     public static class GetHashCodeCombiner
     {
-        public static int GetCombinedHashCode(params object[] objects)
+        public static int Combine(params object[] objects)
         {
             unchecked // Overflow is fine, just wrap
             {

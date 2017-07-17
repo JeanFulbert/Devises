@@ -65,7 +65,7 @@
             this.edges.SequenceEqual(other.edges);
 
         protected override int GetHashCodeCore() =>
-            GetHashCodeCombiner.GetCombinedHashCode(
+            GetHashCodeCombiner.Combine(
                 this.source,
                 this.destination,
                 this.value,
