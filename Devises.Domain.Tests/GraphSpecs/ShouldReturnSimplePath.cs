@@ -14,8 +14,12 @@
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Dollar);
 
-            var expected = new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.06m));
-            Assert.That(actual, Has.Exactly(1).EqualTo(expected));
+            var expected =
+                ExchangeRatePath
+                    .From(Currencies.Euro)
+                    .To(Currencies.Dollar, new ExchangeRate(1.06m));
+            
+            Assert.That(actual, Is.EqualTo(expected));
         }
 
         [Test]
@@ -26,8 +30,12 @@
 
             var actual = sut.GetShortestPathBetween(Currencies.Dollar, Currencies.Euro);
 
-            var expected = new ExchangeRateEdge(Currencies.Dollar, Currencies.Euro, new ExchangeRate(0.9434m));
-            Assert.That(actual, Has.Exactly(1).EqualTo(expected));
+            var expected =
+                ExchangeRatePath
+                    .From(Currencies.Dollar)
+                    .To(Currencies.Euro, new ExchangeRate(0.9434m));
+            
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }

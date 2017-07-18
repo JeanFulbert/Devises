@@ -31,7 +31,7 @@
                 this.matrix[edge.From][edge.To] = edge.Rate;
         }
 
-        public IReadOnlyCollection<ExchangeRateEdge> GetShortestPathBetween(Currency from, Currency to)
+        public ExchangeRatePath GetShortestPathBetween(Currency from, Currency to)
         {
             var shortestPathLeaf = this.SearchShortestPathWithBreadthFirstSearch(from, to);
             var shortestPath = this.GetShortestPathFromLeafNode(shortestPathLeaf);
@@ -73,30 +73,32 @@
 
             return shortestPathLeaf;
         }
-
-        private IReadOnlyCollection<ExchangeRateEdge> GetShortestPathFromLeafNode(CurrencySearchTreeNode shortestPathLeaf)
+        
+        private ExchangeRatePath GetShortestPathFromLeafNode(CurrencySearchTreeNode shortestPathLeaf)
         {
             if (shortestPathLeaf == null)
             {
-                return new List<ExchangeRateEdge>();
+                return null;
             }
 
             var currenciesFromRoot = shortestPathLeaf.GetAllCurrenciesFromRoot();
 
-            var edges =
-                currenciesFromRoot
-                    .Zip(
-                        currenciesFromRoot.Skip(1),
-                        this.BuildExchangeRateEdge)
-                    .ToList();
+            var headCurrency = currenciesFromRoot.First();
+            var tailCurrency = currenciesFromRoot.Skip(1);
 
-            return edges;
+            var path =
+                tailCurrency
+                    .Aggregate(
+                        ExchangeRatePath.From(headCurrency),
+                        this.AddDestinationRate);
+
+            return path;
         }
 
-        private ExchangeRateEdge BuildExchangeRateEdge(Currency cFrom, Currency cTo)
+        private ExchangeRatePath AddDestinationRate(ExchangeRatePath path, Currency currency)
         {
-            var rate = this.matrix[cFrom][cTo];
-            return new ExchangeRateEdge(cFrom, cTo, rate);
+            var rate = this.matrix[path.LastCurrency][currency];
+            return path.To(currency, rate);
         }
     }
 }

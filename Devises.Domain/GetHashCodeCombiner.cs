@@ -1,4 +1,6 @@
-﻿namespace Devises.Domain
+﻿using System.Collections;
+
+namespace Devises.Domain
 {
     public static class GetHashCodeCombiner
     {
@@ -17,6 +19,30 @@
                 }
 
                 return hash;
+            }
+        }
+
+        public static int CombineWithAllElementsOf(this int hash, params IEnumerable[] sequences)
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                var combinedHash = hash;
+
+                foreach (var seq in sequences)
+                {
+                    if (seq != null)
+                    {
+                        foreach (var obj in seq)
+                        {
+                            if (obj != null)
+                            {
+                                combinedHash = (combinedHash * 16777619) ^ obj.GetHashCode();
+                            }
+                        }
+                    }
+                }
+
+                return combinedHash;
             }
         }
     }

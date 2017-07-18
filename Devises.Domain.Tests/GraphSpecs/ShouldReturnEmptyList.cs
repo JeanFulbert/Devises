@@ -14,7 +14,7 @@
 
             var actual = sut.GetShortestPathBetween(Currencies.Yuan, Currencies.Euro);
 
-            Assert.That(actual, Is.Empty);
+            Assert.That(actual, Is.Null);
         }
 
         [Test]
@@ -25,7 +25,7 @@
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 
-            Assert.That(actual, Is.Empty);
+            Assert.That(actual, Is.Null);
         }
 
         [Test]
@@ -37,7 +37,7 @@
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 
-            Assert.That(actual, Is.Empty);
+            Assert.That(actual, Is.Null);
         }
 
     }

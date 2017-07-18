@@ -1,11 +1,10 @@
 ﻿namespace Devises.Domain.Tests.GraphSpecs
 {
-    using System;
     using Devises.Domain.Graph;
     using NUnit.Framework;
 
     [TestFixture]
-    public class ShouldReturnValueWIthFullRate
+    public class ShouldReturnValueWithFullRate
     {
         [Test]
         public void WhenRouteIsComplex()
@@ -20,12 +19,10 @@
 
             var fullValue =
                 sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yen)
-                    .ApplyRates(550);
+                    .ApplyRatesTo(550);
             var actual = decimal.Round(fullValue, 0);
 
-            var expected = 59033m;
-
-            Assert.That(actual, Is.EqualTo(expected));
+            Assert.That(actual, Is.EqualTo(59033m));
         }
     }
 }

@@ -18,12 +18,11 @@
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 
             var expected =
-                new[]
-                {
-                    new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(2m)),
-                    new ExchangeRateEdge(Currencies.Dollar, Currencies.Yuan, new ExchangeRate(3.5m)),
-                };
-
+                ExchangeRatePath
+                    .From(Currencies.Euro)
+                    .To(Currencies.Dollar, new ExchangeRate(2m))
+                    .To(Currencies.Yuan, new ExchangeRate(3.5m));
+            
             Assert.That(actual, Is.EqualTo(expected));
         }
 
@@ -41,13 +40,12 @@
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yen);
 
             var expected =
-                new[]
-                {
-                    new ExchangeRateEdge(Currencies.Euro, Currencies.SwissFranc, new ExchangeRate(1.2053m)),
-                    new ExchangeRateEdge(Currencies.SwissFranc, Currencies.AustralianDollar, new ExchangeRate(1.0351m)),
-                    new ExchangeRateEdge(Currencies.AustralianDollar, Currencies.Yen, new ExchangeRate(86.0305m))
-                };
-
+                ExchangeRatePath
+                    .From(Currencies.Euro)
+                    .To(Currencies.SwissFranc, new ExchangeRate(1.2053m))
+                    .To(Currencies.AustralianDollar, new ExchangeRate(1.0351m))
+                    .To(Currencies.Yen, new ExchangeRate(86.0305m));
+            
             Assert.That(actual, Is.EqualTo(expected));
         }
     }

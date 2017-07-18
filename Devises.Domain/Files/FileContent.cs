@@ -14,8 +14,8 @@
         private readonly IReadOnlyCollection<ExchangeRateEdge> edges;
 
         public FileContent(
-            Currency source, 
-            Currency destination, 
+            Currency source,
+            Currency destination,
             decimal value,
             IReadOnlyCollection<ExchangeRateEdge> edges)
         {
@@ -49,12 +49,12 @@
             }
 
             var shortestPath = graph.GetShortestPathBetween(this.source, this.destination);
-            if (shortestPath.IsNullOrEmpty())
+            if (shortestPath == null)
             {
                 throw new NoCurrencyPathFoundException();
             }
 
-            var convertedValue = shortestPath.ApplyRates(this.value);
+            var convertedValue = shortestPath.ApplyRatesTo(this.value);
             return convertedValue;
         }
 

@@ -47,11 +47,11 @@
     <Compile Include="Currencies.cs" />
     <Compile Include="FilesSpecs\ShouldReturnFileContent.cs" />
     <Compile Include="FilesSpecs\ShouldThrowAnException.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnValueWIthFullRate.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnShortestComplexPath.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnEmptyList.cs" />
-    <Compile Include="GraphSpecs\ShouldReturnSimplePath.cs" />
     <Compile Include="GraphSpecs\ShouldReturnComplexPath.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnEmptyList.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnShortestComplexPath.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnSimplePath.cs" />
+    <Compile Include="GraphSpecs\ShouldReturnValueWithFullRate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeSpecs\CurrencySearchTreeSpecs.cs" />
   </ItemGroup>

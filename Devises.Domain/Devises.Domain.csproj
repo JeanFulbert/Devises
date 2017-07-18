@@ -48,8 +48,8 @@
     <Compile Include="GetHashCodeCombiner.cs" />
     <Compile Include="Graph\CurrencySearchTree.cs" />
     <Compile Include="Graph\ExchangeRateEdge.cs" />
-    <Compile Include="Graph\ExchangeRateEdgeExtensions.cs" />
     <Compile Include="Graph\ExchangeRateGraph.cs" />
+    <Compile Include="Graph\ExchangeRatePath.cs" />
     <Compile Include="ListsExtensions.cs" />
     <Compile Include="ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
