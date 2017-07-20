@@ -21,7 +21,7 @@
             this.rate == other.rate;
 
         protected override int GetHashCodeCore() =>
-            GetHashCodeCombiner.Combine(this.rate);
+            HashCode.Combine(this.rate);
 
         public ExchangeRate Invert() =>
             new ExchangeRate(1 / this.rate);

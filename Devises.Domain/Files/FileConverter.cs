@@ -30,7 +30,7 @@
             }
 
             var headerLine = lines.First();
-            var numberOfLinesLine = lines.ElementAt(1);
+            var numberOfLinesLine = lines[1];
             var currencyTuplesLines = lines.Skip(2).ToList();
 
             var header = Header.FromString(headerLine);

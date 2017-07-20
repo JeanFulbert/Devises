@@ -65,10 +65,11 @@
             this.edges.SequenceEqual(other.edges);
 
         protected override int GetHashCodeCore() =>
-            GetHashCodeCombiner.Combine(
-                this.source,
-                this.destination,
-                this.value,
-                this.edges);
+            HashCode
+                .Combine(
+                    this.source,
+                    this.destination,
+                    this.value)
+                .CombineWithAllElementsOf(this.edges);
     }
 }

@@ -77,7 +77,7 @@ namespace Devises.Domain.Graph
                 this.Rate == other.Rate;
 
             protected override int GetHashCodeCore() =>
-                GetHashCodeCombiner.Combine(
+                HashCode.Combine(
                     this.Currency,
                     this.Rate);
         }

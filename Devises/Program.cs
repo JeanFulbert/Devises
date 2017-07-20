@@ -20,6 +20,7 @@
                 var content = fileReader.GetContent(filePath);
                 var value = decimal.Round(content.GetValue(), 0, MidpointRounding.AwayFromZero);
                 Console.WriteLine(value);
+                Console.ReadLine();
             }
             catch (InvalidOperationException e)
             {

@@ -20,7 +20,7 @@
             this.name == other.name;
 
         protected override int GetHashCodeCore() =>
-            GetHashCodeCombiner.Combine(this.name);
+            HashCode.Combine(this.name);
 
         public override string ToString() =>
             this.name;

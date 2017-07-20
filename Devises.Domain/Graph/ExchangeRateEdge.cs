@@ -46,7 +46,7 @@
             this.Rate == other.Rate;
 
         protected override int GetHashCodeCore() =>
-            GetHashCodeCombiner.Combine(
+            HashCode.Combine(
                 this.From,
                 this.To,
                 this.Rate);

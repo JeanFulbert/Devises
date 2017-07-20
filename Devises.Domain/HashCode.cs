@@ -2,7 +2,7 @@
 
 namespace Devises.Domain
 {
-    public static class GetHashCodeCombiner
+    public static class HashCode
     {
         public static int Combine(params object[] objects)
         {
