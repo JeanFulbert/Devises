@@ -10,14 +10,14 @@
         public void WhenDirectCurrenciesAsked()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.06m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Dollar);
 
             var expected =
                 ExchangeRatePath
                     .From(Currencies.Euro)
-                    .To(Currencies.Dollar, new ExchangeRate(1.06m));
+                    .To(Currencies.Dollar, new Rate(1.06m));
             
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -26,14 +26,14 @@
         public void WhenDirectInvertedCurrenciesAsked()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.06m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Dollar, Currencies.Euro);
 
             var expected =
                 ExchangeRatePath
                     .From(Currencies.Dollar)
-                    .To(Currencies.Euro, new ExchangeRate(0.9434m));
+                    .To(Currencies.Euro, new Rate(0.9434m));
             
             Assert.That(actual, Is.EqualTo(expected));
         }

@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using Devises.Domain.Graph;
+    using Devises.Domain.Utils;
 
     public class FileConverter
     {
@@ -73,7 +74,7 @@
                     otherLines);
         }
 
-        private static ExchangeRateEdge BuildRateEdgeFromString(string line)
+        private static ExchangeRate BuildRateEdgeFromString(string line)
         {
             var match = CurrencyTuplesRegex.Match(line);
             if (!match.Success)
@@ -85,25 +86,15 @@
             var dest = match.Groups["dest"].Value;
             var value = decimal.Parse(match.Groups["ratio"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
 
-            return new ExchangeRateEdge(new Currency(source), new Currency(dest), new ExchangeRate(value));
+            return new ExchangeRate(new Currency(source), new Currency(dest), new Rate(value));
         }
 
         private class Header
         {
             private Header(Currency source, Currency destination, decimal value)
             {
-                if (source == null)
-                {
-                    throw new ArgumentNullException(nameof(source));
-                }
-
-                if (destination == null)
-                {
-                    throw new ArgumentNullException(nameof(destination));
-                }
-
-                this.Source = source;
-                this.Destination = destination;
+                this.Source = source ?? throw new ArgumentNullException(nameof(source));
+                this.Destination = destination ?? throw new ArgumentNullException(nameof(destination));
                 this.Value = value;
             }
 

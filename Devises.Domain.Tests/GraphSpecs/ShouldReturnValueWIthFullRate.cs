@@ -10,12 +10,12 @@
         public void WhenRouteIsComplex()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.AustralianDollar, Currencies.SwissFranc, new ExchangeRate(0.9661m)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Yen, Currencies.Wu, new ExchangeRate(13.1151m)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.SwissFranc, new ExchangeRate(1.2053m)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.AustralianDollar, Currencies.Yen, new ExchangeRate(86.0305m)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.2989m)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Yen, Currencies.Rupee, new ExchangeRate(0.6571m)));
+            sut.AddEdge(new ExchangeRate(Currencies.AustralianDollar, Currencies.SwissFranc, new Rate(0.9661m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Yen, Currencies.Wu, new Rate(13.1151m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.SwissFranc, new Rate(1.2053m)));
+            sut.AddEdge(new ExchangeRate(Currencies.AustralianDollar, Currencies.Yen, new Rate(86.0305m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.2989m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Yen, Currencies.Rupee, new Rate(0.6571m)));
 
             var fullValue =
                 sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yen)

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Devises.Domain
+namespace Devises.Domain.Utils
 {
     public static class HashCode
     {

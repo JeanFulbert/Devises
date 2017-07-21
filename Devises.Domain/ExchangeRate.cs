@@ -1,63 +1,58 @@
 ﻿namespace Devises.Domain
 {
+    using Devises.Domain.Utils;
     using System;
-    using System.Globalization;
 
     public class ExchangeRate : ValueObject<ExchangeRate>
     {
-        private readonly decimal rate;
-
-        public ExchangeRate(decimal rate)
+        public ExchangeRate(Currency from, Currency to, Rate rate)
         {
-            if (rate <= 0)
+            if (from == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(rate));
+                throw new ArgumentNullException(nameof(from));
             }
 
-            this.rate = Decimal.Round(rate, 4);
+            if (to == null)
+            {
+                throw new ArgumentNullException(nameof(to));
+            }
+
+            if (rate == null)
+            {
+                throw new ArgumentNullException(nameof(rate));
+            }
+
+            if (from == to)
+            {
+                throw new ArgumentException("An exchange rate must be between two different currencies");
+            }
+
+            this.From = from;
+            this.To = to;
+            this.Rate = rate;
         }
 
-        protected override bool EqualsCore(ExchangeRate other) =>
-            this.rate == other.rate;
+        public Currency From { get; }
 
-        protected override int GetHashCodeCore() =>
-            HashCode.Combine(this.rate);
+        public Currency To { get; }
+
+        public Rate Rate { get; }
 
         public ExchangeRate Invert() =>
-            new ExchangeRate(1 / this.rate);
+            new ExchangeRate(this.To, this.From, this.Rate.Invert());
 
+        protected override bool EqualsCore(ExchangeRate other) =>
+            this.From == other.From &&
+            this.To == other.To &&
+            this.Rate == other.Rate;
 
-        public static implicit operator decimal(ExchangeRate e)
-        {
-            return e.rate;
-        }
-
-        public static ExchangeRate operator *(ExchangeRate a, ExchangeRate b)
-        {
-            if (a == null)
-            {
-                throw new ArgumentNullException(nameof(a));
-            }
-
-            if (b == null)
-            {
-                throw new ArgumentNullException(nameof(b));
-            }
-
-            return new ExchangeRate(a.rate * b.rate);
-        }
-
-        public static decimal operator *(ExchangeRate a, decimal b)
-        {
-            if (a == null)
-            {
-                throw new ArgumentNullException(nameof(a));
-            }
-
-            return a.rate * b;
-        }
+        protected override int GetHashCodeCore() =>
+            HashCode.Combine(
+                this.From,
+                this.To,
+                this.Rate);
 
         public override string ToString() =>
-            this.rate.ToString(CultureInfo.InvariantCulture);
+            $"{this.From} -> {this.To} = {this.Rate}";
     }
 }

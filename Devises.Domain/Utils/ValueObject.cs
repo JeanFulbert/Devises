@@ -1,4 +1,4 @@
-﻿namespace Devises.Domain
+﻿namespace Devises.Domain.Utils
 {
     // from http://enterprisecraftsmanship.com/2015/01/03/value-objects-explained/
     public abstract class ValueObject<T>

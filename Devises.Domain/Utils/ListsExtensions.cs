@@ -1,4 +1,4 @@
-﻿namespace Devises.Domain
+﻿namespace Devises.Domain.Utils
 {
     using System.Collections.Generic;
     using System.Linq;

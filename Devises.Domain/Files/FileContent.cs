@@ -5,39 +5,25 @@
     using System.Linq;
     using Devises.Domain;
     using Devises.Domain.Graph;
+    using Devises.Domain.Utils;
 
     public class FileContent : ValueObject<FileContent>
     {
         private readonly Currency source;
         private readonly Currency destination;
         private readonly decimal value;
-        private readonly IReadOnlyCollection<ExchangeRateEdge> edges;
+        private readonly IReadOnlyCollection<ExchangeRate> edges;
 
         public FileContent(
             Currency source,
             Currency destination,
             decimal value,
-            IReadOnlyCollection<ExchangeRateEdge> edges)
+            IReadOnlyCollection<ExchangeRate> edges)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (destination == null)
-            {
-                throw new ArgumentNullException(nameof(destination));
-            }
-
-            if (edges == null)
-            {
-                throw new ArgumentNullException(nameof(edges));
-            }
-
-            this.source = source;
-            this.destination = destination;
+            this.source = source ?? throw new ArgumentNullException(nameof(source));
+            this.destination = destination ?? throw new ArgumentNullException(nameof(destination));
             this.value = value;
-            this.edges = edges;
+            this.edges = edges ?? throw new ArgumentNullException(nameof(edges));
         }
 
         public decimal GetValue()

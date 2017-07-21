@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Devises.Domain.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,15 +12,10 @@ namespace Devises.Domain.Graph
 
         private ExchangeRatePath(Currency initial)
         {
-            if (initial == null)
-            {
-                throw new ArgumentNullException(nameof(initial));
-            }
-
-            this.initial = initial;
+            this.initial = initial ?? throw new ArgumentNullException(nameof(initial));
         }
 
-        public ExchangeRatePath To(Currency destination, ExchangeRate rate) =>
+        public ExchangeRatePath To(Currency destination, Rate rate) =>
             new ExchangeRatePath(this.initial)
             {
                 successiveCollection =
@@ -62,7 +58,7 @@ namespace Devises.Domain.Graph
 
         private class Destination : ValueObject<Destination>
         {
-            public Destination(Currency currency, ExchangeRate rate)
+            public Destination(Currency currency, Rate rate)
             {
                 this.Currency = currency;
                 this.Rate = rate;
@@ -70,7 +66,7 @@ namespace Devises.Domain.Graph
 
             public Currency Currency { get; }
 
-            public ExchangeRate Rate { get; }
+            public Rate Rate { get; }
 
             protected override bool EqualsCore(Destination other) =>
                 this.Currency == other.Currency &&

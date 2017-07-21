@@ -27,10 +27,10 @@
                     Currencies.Euro,
                     Currencies.Dollar,
                     500,
-                    new List<ExchangeRateEdge>
+                    new List<ExchangeRate>
                     {
-                        new ExchangeRateEdge(Currencies.Euro, Currencies.SwissFranc, new ExchangeRate(1.2m)),
-                        new ExchangeRateEdge(Currencies.SwissFranc, Currencies.Dollar, new ExchangeRate(1.3m)),
+                        new ExchangeRate(Currencies.Euro, Currencies.SwissFranc, new Rate(1.2m)),
+                        new ExchangeRate(Currencies.SwissFranc, Currencies.Dollar, new Rate(1.3m)),
                     });
 
             Assert.That(actual, Is.EqualTo(expected));

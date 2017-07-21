@@ -10,7 +10,7 @@
         public void WhenFromCurrencyDoesNotExists()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.06m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Yuan, Currencies.Euro);
 
@@ -21,7 +21,7 @@
         public void WhenToCurrencyDoesNotExists()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(1.06m)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 
@@ -32,8 +32,8 @@
         public void WhenPathContainsHole()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Euro, Currencies.Dollar, new ExchangeRate(2)));
-            sut.AddEdge(new ExchangeRateEdge(Currencies.Yen, Currencies.Yuan, new ExchangeRate(3)));
+            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(2)));
+            sut.AddEdge(new ExchangeRate(Currencies.Yen, Currencies.Yuan, new Rate(3)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 

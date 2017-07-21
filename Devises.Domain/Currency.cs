@@ -1,5 +1,6 @@
 ﻿namespace Devises.Domain
 {
+    using Devises.Domain.Utils;
     using System;
 
     public class Currency : ValueObject<Currency>

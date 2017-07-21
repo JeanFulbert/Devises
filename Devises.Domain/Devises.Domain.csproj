@@ -41,17 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Currency.cs" />
-    <Compile Include="ExchangeRate.cs" />
     <Compile Include="Files\FileContent.cs" />
     <Compile Include="Files\FileConverter.cs" />
     <Compile Include="Files\NoCurrencyPathFoundException.cs" />
-    <Compile Include="HashCode.cs" />
+    <Compile Include="ExchangeRate.cs" />
+    <Compile Include="Utils\HashCode.cs" />
     <Compile Include="Graph\CurrencySearchTree.cs" />
-    <Compile Include="Graph\ExchangeRateEdge.cs" />
     <Compile Include="Graph\ExchangeRateGraph.cs" />
     <Compile Include="Graph\ExchangeRatePath.cs" />
-    <Compile Include="ListsExtensions.cs" />
-    <Compile Include="ValueObject.cs" />
+    <Compile Include="Utils\ListsExtensions.cs" />
+    <Compile Include="Rate.cs" />
+    <Compile Include="Utils\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,15 +1,16 @@
 ﻿namespace Devises.Domain.Graph
 {
+    using Devises.Domain.Utils;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class ExchangeRateGraph
     {
-        private readonly Dictionary<Currency, Dictionary<Currency, ExchangeRate>> matrix =
-            new Dictionary<Currency, Dictionary<Currency, ExchangeRate>>();
+        private readonly Dictionary<Currency, Dictionary<Currency, Rate>> matrix =
+            new Dictionary<Currency, Dictionary<Currency, Rate>>();
 
-        public void AddEdge(ExchangeRateEdge edge)
+        public void AddEdge(ExchangeRate edge)
         {
             if (edge == null)
             {
@@ -20,10 +21,10 @@
             this.AddEdgeSafe(edge.Invert());
         }
 
-        private void AddEdgeSafe(ExchangeRateEdge edge)
+        private void AddEdgeSafe(ExchangeRate edge)
         {
             if (!this.matrix.ContainsKey(edge.From))
-                this.matrix.Add(edge.From, new Dictionary<Currency, ExchangeRate>());
+                this.matrix.Add(edge.From, new Dictionary<Currency, Rate>());
 
             if (!this.matrix[edge.From].ContainsKey(edge.To))
                 this.matrix[edge.From].Add(edge.To, edge.Rate);
