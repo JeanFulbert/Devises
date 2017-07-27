@@ -12,26 +12,26 @@
         private readonly Currency source;
         private readonly Currency destination;
         private readonly decimal value;
-        private readonly IReadOnlyCollection<ExchangeRate> edges;
+        private readonly IReadOnlyCollection<ExchangeRate> echangeRates;
 
         public FileContent(
             Currency source,
             Currency destination,
             decimal value,
-            IReadOnlyCollection<ExchangeRate> edges)
+            IReadOnlyCollection<ExchangeRate> echangeRates)
         {
             this.source = source ?? throw new ArgumentNullException(nameof(source));
             this.destination = destination ?? throw new ArgumentNullException(nameof(destination));
             this.value = value;
-            this.edges = edges ?? throw new ArgumentNullException(nameof(edges));
+            this.echangeRates = echangeRates ?? throw new ArgumentNullException(nameof(echangeRates));
         }
 
         public decimal GetValue()
         {
             var graph = new ExchangeRateGraph();
-            foreach (var exchangeRateEdge in this.edges)
+            foreach (var exchRate in this.echangeRates)
             {
-                graph.Add(exchangeRateEdge);
+                graph.Add(exchRate);
             }
 
             var shortestPath = graph.GetShortestPathBetween(this.source, this.destination);
@@ -48,7 +48,7 @@
             this.source == other.source &&
             this.destination == other.destination &&
             this.value == other.value &&
-            this.edges.SequenceEqual(other.edges);
+            this.echangeRates.SequenceEqual(other.echangeRates);
 
         protected override int GetHashCodeCore() =>
             HashCode
@@ -56,6 +56,6 @@
                     this.source,
                     this.destination,
                     this.value)
-                .CombineWithAllElementsOf(this.edges);
+                .CombineWithAllElementsOf(this.echangeRates);
     }
 }
