@@ -10,8 +10,8 @@
         public void WhenRouteIsStraightForward()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(2m)));
-            sut.AddEdge(new ExchangeRate(Currencies.Dollar, Currencies.Yuan, new Rate(3m)));
+            sut.Add(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(2m)));
+            sut.Add(new ExchangeRate(Currencies.Dollar, Currencies.Yuan, new Rate(3m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Yuan);
 
@@ -28,8 +28,8 @@
         public void WhenRouteIsStraightBackward()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(2m)));
-            sut.AddEdge(new ExchangeRate(Currencies.Dollar, Currencies.Yuan, new Rate(3m)));
+            sut.Add(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(2m)));
+            sut.Add(new ExchangeRate(Currencies.Dollar, Currencies.Yuan, new Rate(3m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Yuan, Currencies.Euro);
 

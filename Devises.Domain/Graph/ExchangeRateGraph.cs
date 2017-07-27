@@ -7,29 +7,29 @@
 
     public class ExchangeRateGraph
     {
-        private readonly Dictionary<Currency, Dictionary<Currency, Rate>> matrix =
+        private readonly Dictionary<Currency, Dictionary<Currency, Rate>> rateByCurrencies =
             new Dictionary<Currency, Dictionary<Currency, Rate>>();
 
-        public void AddEdge(ExchangeRate edge)
+        public void Add(ExchangeRate edge)
         {
             if (edge == null)
             {
                 throw new ArgumentNullException(nameof(edge));
             }
 
-            this.AddEdgeSafe(edge);
-            this.AddEdgeSafe(edge.Invert());
+            this.AddSafe(edge);
+            this.AddSafe(edge.Invert());
         }
 
-        private void AddEdgeSafe(ExchangeRate edge)
+        private void AddSafe(ExchangeRate edge)
         {
-            if (!this.matrix.ContainsKey(edge.From))
-                this.matrix.Add(edge.From, new Dictionary<Currency, Rate>());
+            if (!this.rateByCurrencies.ContainsKey(edge.From))
+                this.rateByCurrencies.Add(edge.From, new Dictionary<Currency, Rate>());
 
-            if (!this.matrix[edge.From].ContainsKey(edge.To))
-                this.matrix[edge.From].Add(edge.To, edge.Rate);
+            if (!this.rateByCurrencies[edge.From].ContainsKey(edge.To))
+                this.rateByCurrencies[edge.From].Add(edge.To, edge.Rate);
             else
-                this.matrix[edge.From][edge.To] = edge.Rate;
+                this.rateByCurrencies[edge.From][edge.To] = edge.Rate;
         }
 
         public ExchangeRatePath GetShortestPathBetween(Currency from, Currency to)
@@ -41,13 +41,22 @@
 
         private CurrencySearchTreeNode SearchShortestPathWithBreadthFirstSearch(Currency from, Currency to)
         {
-            if (!this.matrix.ContainsKey(from) || !this.matrix.ContainsKey(to))
+            if (!this.rateByCurrencies.ContainsKey(from) || !this.rateByCurrencies.ContainsKey(to))
             {
                 return null;
             }
 
+            // To search the shortest path,
+            // we build a tree of all pathes already visited (nodesToVisit).
+            // We loop on these nodes until a path to the destination currency
+            // is found, or until that all currencies has been visited.
+
+            // As we dive into the graph using Breadth first search,
+            // we ensure that we don't use again visited currencies
+            // to avoid circular pathes (unvisitedCurrencies).
+
             var nodesToVisit = new Queue<CurrencySearchTreeNode>();
-            var unvisitedCurrencies = new HashSet<Currency>(this.matrix.Keys);
+            var unvisitedCurrencies = new HashSet<Currency>(this.rateByCurrencies.Keys);
 
             CurrencySearchTreeNode shortestPathLeaf = null;
 
@@ -64,8 +73,8 @@
                 unvisitedCurrencies.Remove(node.Currency);
 
                 var currenciesToVisit =
-                    this.matrix[node.Currency].Keys
-                        .Where(c => unvisitedCurrencies.Contains(c))
+                    this.rateByCurrencies[node.Currency].Keys
+                        .Where(destinationCurr => unvisitedCurrencies.Contains(destinationCurr))
                         .ToList();
 
                 var children = node.CreateChildren(currenciesToVisit);
@@ -98,7 +107,7 @@
 
         private ExchangeRatePath AddDestinationRate(ExchangeRatePath path, Currency currency)
         {
-            var rate = this.matrix[path.LastCurrency][currency];
+            var rate = this.rateByCurrencies[path.LastCurrency][currency];
             return path.To(currency, rate);
         }
     }

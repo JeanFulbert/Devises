@@ -32,27 +32,52 @@
 
             var headerLine = lines.First();
             var numberOfLinesLine = lines[1];
-            var currencyTuplesLines = lines.Skip(2).ToList();
+            var exchangeRateLines = lines.Skip(2).ToList();
 
+            var header = GetHeader(headerLine);
+            var exchangeRates = GetExchangeRates(exchangeRateLines);
+
+            VerifyNumberOfLines(numberOfLinesLine, exchangeRates);
+
+            return
+                new FileContent(
+                    header.Source,
+                    header.Destination,
+                    header.Value,
+                    exchangeRates);
+        }
+
+        private static Header GetHeader(string headerLine)
+        {
             var header = Header.FromString(headerLine);
             if (header == null)
             {
                 throw new InvalidOperationException("Header format is not valid.");
             }
 
+            return header;
+        }
+
+        private static IReadOnlyCollection<ExchangeRate> GetExchangeRates(List<string> exchangeRateLines)
+        {
+            var exchangeRates =
+                exchangeRateLines
+                    .Select(BuildRateEdgeFromString)
+                    .ToList();
+            if (exchangeRates.Any(e => e == null))
+            {
+                throw new InvalidOperationException("One of the lines format is not valid.");
+            }
+
+            return exchangeRates;
+        }
+
+        private static void VerifyNumberOfLines(string numberOfLinesLine, IReadOnlyCollection<ExchangeRate> exchangeRates)
+        {
             var numberOfLinesMatch = NumberOfOtherLinesRegex.Match(numberOfLinesLine);
             if (!numberOfLinesMatch.Success)
             {
                 throw new InvalidOperationException("Number of lines format is not valid.");
-            }
-
-            var otherLines =
-                currencyTuplesLines
-                    .Select(BuildRateEdgeFromString)
-                    .ToList();
-            if (otherLines.Any(e => e == null))
-            {
-                throw new InvalidOperationException("One of the lines format is not valid.");
             }
 
             var numberOfLines = int.Parse(numberOfLinesMatch.Groups[0].Value);
@@ -61,17 +86,10 @@
                 throw new InvalidOperationException("The number of lines must be strictly positive.");
             }
 
-            if (numberOfLines != otherLines.Count)
+            if (numberOfLines != exchangeRates.Count)
             {
                 throw new InvalidOperationException("The expected number of lines doesn't match the number of lines.");
             }
-
-            return
-                new FileContent(
-                    header.Source,
-                    header.Destination,
-                    header.Value,
-                    otherLines);
         }
 
         private static ExchangeRate BuildRateEdgeFromString(string line)

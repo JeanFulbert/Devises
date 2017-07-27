@@ -10,7 +10,7 @@
         public void WhenDirectCurrenciesAsked()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
+            sut.Add(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Euro, Currencies.Dollar);
 
@@ -26,7 +26,7 @@
         public void WhenDirectInvertedCurrenciesAsked()
         {
             var sut = new ExchangeRateGraph();
-            sut.AddEdge(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
+            sut.Add(new ExchangeRate(Currencies.Euro, Currencies.Dollar, new Rate(1.06m)));
 
             var actual = sut.GetShortestPathBetween(Currencies.Dollar, Currencies.Euro);
 

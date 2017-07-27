@@ -31,7 +31,7 @@
             var graph = new ExchangeRateGraph();
             foreach (var exchangeRateEdge in this.edges)
             {
-                graph.AddEdge(exchangeRateEdge);
+                graph.Add(exchangeRateEdge);
             }
 
             var shortestPath = graph.GetShortestPathBetween(this.source, this.destination);

@@ -1,5 +1,6 @@
 ﻿namespace Devises
 {
+    using Devises.Domain.Files;
     using System;
 
     public class Program
@@ -29,6 +30,10 @@
             catch (FormatException e)
             {
                 Console.WriteLine("File badly formatted: " + e.Message);
+            }
+            catch (NoCurrencyPathFoundException e)
+            {
+                Console.WriteLine("No currency path found.");
             }
         }
     }
